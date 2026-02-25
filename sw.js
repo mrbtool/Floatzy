@@ -1,4 +1,4 @@
-const CACHE_NAME = 'video-floater-v1';
+const CACHE_NAME = 'video-floater-v3';
 const ASSETS_TO_CACHE =[
   './index.html',
   './manifest.json',
