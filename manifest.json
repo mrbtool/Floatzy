@@ -1,0 +1,21 @@
+{
+  "name": "Video Floater",
+  "short_name": "Floater",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "description": "Play videos seamlessly over other apps",
+  "icons":[
+    {
+      "src": "https://raw.githubusercontent.com/mrbtool/Floatzy/refs/heads/main/file_00000000285471fd9df54c81f83e2184%20(1).png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/mrbtool/Floatzy/refs/heads/main/file_00000000285471fd9df54c81f83e2184%20(1).png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
