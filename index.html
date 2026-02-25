@@ -317,34 +317,52 @@
     loadFirebaseData();
 
     // ==========================================
+// ==========================================
     // PWA INSTALLATION & SERVICE WORKER LOGIC
     // ==========================================
     let deferredPrompt;
     const installBtn = document.getElementById('installBtn');
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-        // Prevent default mini-infobar
-        e.preventDefault();
-        // Stash the event so it can be triggered later.
-        deferredPrompt = e;
-        // Show our custom Install button
-        installBtn.style.display = 'flex';
-    });
+    // 1. Check if the app is already installed/running as an app
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
+                         window.navigator.standalone === true || 
+                         localStorage.getItem('pwaInstalled') === 'true';
 
+    // 2. Only listen for the install prompt if it's NOT installed
+    if (!isStandalone) {
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent default mini-infobar
+            e.preventDefault();
+            // Stash the event so it can be triggered later
+            deferredPrompt = e;
+            // Show our custom Install button
+            installBtn.style.display = 'flex';
+        });
+    } else {
+        // Force hide just in case
+        installBtn.style.display = 'none';
+    }
+
+    // 3. Handle Install Button Click
     installBtn.addEventListener('click', async () => {
         if (!deferredPrompt) return;
-        // Show the prompt
+        // Show the native browser install prompt
         deferredPrompt.prompt();
         // Wait for user choice
         const { outcome } = await deferredPrompt.userChoice;
         if (outcome === 'accepted') {
             console.log('App successfully installed');
+            // Save to local storage so it never shows in the browser again
+            localStorage.setItem('pwaInstalled', 'true');
+            installBtn.style.display = 'none';
         }
         deferredPrompt = null;
-        installBtn.style.display = 'none';
     });
 
+    // 4. Fallback: If installed via the browser menu instead of our button
     window.addEventListener('appinstalled', () => {
+        console.log('App was installed');
+        localStorage.setItem('pwaInstalled', 'true');
         installBtn.style.display = 'none';
     });
 
